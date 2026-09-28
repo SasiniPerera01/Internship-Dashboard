@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sasini Perera – Internship Dashboard</title>
 <style>
-:root{--bg:#fff;--card:#eeeff1;--ink:#22252a;--mut:#5f646b;--red:#c41230;--ash:#6b7076;--dash:#3a3d42;--track:#d3d5d9;--fh:16px;--fb:13px;--fs:12px;--fn:clamp(36px,4vw,54px);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root{--bg:#fff;--card:#eeeff1;--ink:#22252a;--mut:#5f646b;--red:#c41230;--ash:#6b7076;--blk:#1b1c1e;--dash:#3a3d42;--track:#d3d5d9;--fh:16px;--fb:13px;--fs:12px;--fn:clamp(36px,4vw,54px);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17181a;--card:#26282b;--ink:#f0f0f0;--mut:#b0b4ba;--track:#3d4045}}
 :root[data-theme="dark"]{--bg:#17181a;--card:#26282b;--ink:#f0f0f0;--mut:#b0b4ba;--track:#3d4045}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -17,10 +17,10 @@ main{padding-bottom:32px}
 h2{font-size:18px;margin:28px 0 12px}
 .card{background:var(--card);border-radius:12px;padding:16px}
 .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
-.kpi,.tile{text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:150px}
-.kpi b,.tile b{font-size:var(--fn);line-height:1;color:var(--red);margin-bottom:10px}
-.kpi span,.tile span{font-size:var(--fh);font-weight:bold}.kpi small,.tile small{font-size:var(--fs);color:var(--mut);margin-top:4px;line-height:1.4}
-.tile{border:0;font:inherit;color:inherit;cursor:pointer;width:100%}.tile.on{background:var(--red)}.tile.on b,.tile.on span,.tile.on small{color:#fff}
+.kpi{text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:26px;min-height:160px}.kpi small{min-height:36px}
+.k1{background:var(--red)}.k2{background:var(--ash)}.k3{background:var(--blk)}.kpi b{font-size:var(--fn);line-height:1;color:#fff;margin-bottom:10px}
+.kpi span{font-size:var(--fh);font-weight:bold;color:#fff}.kpi small{font-size:var(--fs);color:#fff;opacity:.9;margin-top:4px;line-height:1.5}
+.pl{display:flex;align-items:center;gap:16px;width:100%;border:0;background:none;padding:8px 0;font:inherit;color:inherit;cursor:pointer;text-align:left}.pl .nm{width:200px;flex:none}.pl .nm b{display:block;font-size:var(--fh)}.pl .nm small{font-size:var(--fs);color:var(--mut)}.pl.on .nm b{color:var(--red)}.pl .bw{flex:1}.pl .pbar{height:46px;width:0;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;font-size:22px;transition:width 1s ease}
 .bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center}.sp{flex:1}
 button.b{font:inherit;font-size:var(--fb);border:1px solid var(--red);background:transparent;color:var(--red);border-radius:999px;padding:6px 16px;cursor:pointer}
 button.b.on{background:var(--red);color:#fff}
@@ -37,12 +37,12 @@ input[type=range]{width:100%;accent-color:#c41230;margin-bottom:8px}
 .col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;width:24%}
 .col b{font-size:var(--fh);margin-bottom:4px}.col div{width:100%;border-radius:8px 8px 0 0;height:0;transition:height 1s ease}
 .lab{display:flex;justify-content:space-around;font-size:var(--fb);font-weight:bold;margin-top:8px}.lab span{width:24%;text-align:center}
-@media (max-width:700px){.row3{grid-template-columns:1fr}header p{text-align:left}}
+@media (max-width:700px){.row3{grid-template-columns:1fr}.pl .nm{width:120px}header p{text-align:left}}
 </style></head><body>
 <header><div class="in"><h1>Internship Dashboard – Sasini Perera</h1><p>Business Excellence · Vallibel ONE<br>Projects, teams and workload</p></div></header>
 <main><div class="in">
 <div class="row3" id="kpis"></div>
-<h2>Projects by plant</h2><div class="row3" id="tiles" style="margin-top:0"></div>
+<h2>Projects by plant</h2><div id="plants"></div>
 <h2>Projects &amp; team members</h2>
 <div class="bar" id="filters"></div><div class="grid" id="view"></div>
 <h2>BU-wise workload</h2><div class="card"><div class="chart" id="chart"></div><div class="lab" id="lab"></div></div>
@@ -53,7 +53,7 @@ var P=[
 {n:"Unidil IoT: real-time printer machine data monitoring",bu:"Unidil",m:"IoT project",p:0,t:[]},
 {n:"Unidil: reduction of water consumption by 20%",bu:"Unidil",m:"Target: 20% reduction",p:0,t:[]},
 {n:"Unidil: automatic die-cut removal & waste handling system",bu:"Unidil",m:"Corrugated carton production",p:0,t:[]},
-{n:"SAL Automated Rack Transfer",bu:"SAL",m:"Fabrication ongoing",p:45,t:["Sasini","Anuranga","Dulitha","Okitha","Pasindu","Sithara"]},
+{n:"SAL Automated Rack Transfer",bu:"SAL",be:1,m:"Fabrication ongoing",p:45,t:["Sasini","Anuranga","Dulitha","Okitha","Pasindu","Sithara"]},
 {n:"SAL Golden Run",bu:"SAL",m:"Data collection",p:55,t:[]},
 {n:"SAL IoT Energy Meter",bu:"SAL",m:"Documentation",p:50,t:[]},
 {n:"SAL-CON036: reduce LPG consumption by 5%",bu:"SAL",m:"Target: 5% reduction",p:0,t:[]},
@@ -61,10 +61,9 @@ var P=[
 {n:"SAL-CON038: reduce die changeover time, 5\" extruder press",bu:"SAL",m:"Target: 10.00 to 9.00",p:0,t:[]},
 {n:"SAL-CON039: reduce die changeover time, 6\" extruder press",bu:"SAL",m:"Target: 11.64 to 10.49",p:0,t:[]},
 {n:"SAL-CON040: reduce die changeover time, 7\" extruder press",bu:"SAL",m:"Target: 9.78 to 8.95",p:0,t:[]},
-{n:"Project Charter Tracker",bu:"All",m:"Updated every Tue & Fri",p:70,t:[]},
-{n:"Factory visit & process learning",bu:"LWT",m:"Visit completed",p:null,t:[]}];
-var TILES=[["SAL","SAL projects"],["Unidil","Unidil projects"],["All","BE project (all plants)"]];
-var F=[["SAL","SAL"],["Unidil","Unidil"],["All","BE"],["LWT","LWT"]];
+{n:"LWT IoT Implementation",bu:"LWT",be:1,m:"IoT project",p:0,t:[]}];
+var PL=[["SAL","SAL","#c41230"],["Unidil","Unidil","#1b1c1e"],["LWT","Lanka Walltiles (LWT)","#6b7076"]];
+var F=[["SAL","SAL"],["Unidil","Unidil"],["LWT","LWT"]];
 var W=[["SAL",55,"#c41230"],["Unidil",30,"#4a4e54"],["LWT",15,"#9a9ea4"]];
 var f="SAL",edit=false,K=function(){try{return JSON.parse(localStorage.getItem("dash5")||"{}")}catch(e){return{}}}();
 P.forEach(function(x){if(K[x.n]!=null&&x.p!=null)x.p=K[x.n]});
@@ -72,12 +71,15 @@ function save(){var o={};P.forEach(function(x){o[x.n]=x.p});try{localStorage.set
 function $(i){return document.getElementById(i)}
 function cnt(b){return P.filter(function(x){return x.bu==b}).length}
 function count(el,to){var s=0,d=Math.max(1,Math.round(to/25)),i=setInterval(function(){s=Math.min(to,s+d);el.textContent=s;if(s>=to)clearInterval(i)},40)}
-function kpis(){var tot=P.filter(function(x){return x.bu!="LWT"}).length;
-var d=[["Active projects",tot,"1 BE project + "+(tot-1)+" BU projects"],["Factory visits completed",6,"Unidil, SCPLC, RBL, LWT, RCL-H, RCL-E"],["Short course completed",1,"One Million Prompts AI Course"]];
-$("kpis").innerHTML=d.map(function(k){return '<div class="card kpi"><b data-to="'+k[1]+'">0</b><span>'+k[0]+'</span><small>'+k[2]+'</small></div>'}).join("");
+function sub(l){var n=l.length,e=l.filter(function(x){return x.be}).length,u=n-e,a=[];if(e)a.push(e+" BE project"+(e>1?"s":""));if(u)a.push(u+" BU project"+(u>1?"s":""));return a.join(" + ")}
+function kpis(){var tot=P.length;
+var d=[["Active projects",tot,sub(P)],["Factory visits completed",6,"SAL, SCPLC, Unidil, LWT, LT, RBL<br>Still to visit: RCL-H, RCL-E"],["Short course completed",1,"One Million Prompts AI Course"]];
+$("kpis").innerHTML=d.map(function(k){return '<div class="card kpi k'+(d.indexOf(k)+1)+'"><b data-to="'+k[1]+'">0</b><span>'+k[0]+'</span><small>'+k[2]+'</small></div>'}).join("");
 document.querySelectorAll(".kpi b").forEach(function(b){count(b,+b.dataset.to)})}
-function tiles(){$("tiles").innerHTML=TILES.map(function(t){return '<button class="card tile'+(t[0]==f?" on":"")+'" data-f="'+t[0]+'"><b>'+cnt(t[0])+'</b><span>'+t[1]+'</span></button>'}).join("");
-document.querySelectorAll(".tile").forEach(function(b){b.onclick=function(){f=b.dataset.f;render()}})}
+function plants(){var m=Math.max.apply(null,PL.map(function(a){return cnt(a[0])}));
+$("plants").innerHTML=PL.map(function(a){var l=P.filter(function(x){return x.bu==a[0]});return '<button class="pl'+(a[0]==f?" on":"")+'" data-f="'+a[0]+'"><div class="nm"><b>'+a[1]+'</b><small>'+sub(l)+'</small></div><div class="bw"><div class="pbar" data-w="'+l.length/m*100+'" style="background:'+a[2]+'">'+l.length+'</div></div></button>'}).join("");
+document.querySelectorAll(".pl").forEach(function(b){b.onclick=function(){f=b.dataset.f;render()}});
+setTimeout(function(){document.querySelectorAll(".pbar").forEach(function(e){e.style.width=e.dataset.w+"%"})},50)}
 function view(){$("filters").innerHTML=F.map(function(b){return '<button class="b'+(b[0]==f?" on":"")+'" data-f="'+b[0]+'">'+b[1]+'</button>'}).join("")+'<span class="sp"></span><button class="b'+(edit?" on":"")+'" id="ed">'+(edit?"Done editing":"Edit progress")+'</button>';
 document.querySelectorAll(".bar [data-f]").forEach(function(b){b.onclick=function(){f=b.dataset.f;render()}});
 $("ed").onclick=function(){edit=!edit;view()};
@@ -90,6 +92,6 @@ document.querySelectorAll("input[type=range]").forEach(function(r){r.oninput=fun
 function chart(){$("chart").innerHTML=W.map(function(w){return '<div class="col"><b>'+w[1]+'%</b><div data-h="'+w[1]+'" style="background:'+w[2]+'"></div></div>'}).join("");
 $("lab").innerHTML=W.map(function(w){return '<span>'+w[0]+'</span>'}).join("");
 setTimeout(function(){document.querySelectorAll(".col div").forEach(function(e){e.style.height=(e.dataset.h*1.6)+"%"})},100)}
-function render(){tiles();view()}
+function render(){plants();view()}
 kpis();render();chart();
 </script></body></html>
