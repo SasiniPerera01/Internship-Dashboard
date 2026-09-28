@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sasini Perera – Internship Dashboard</title>
+<style>
+:root{--bg:#fff;--card:#fbe9ec;--ink:#1a1a1a;--mut:#555;--red:#c41230;--dred:#8c0e24;--track:#e6d3d6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#16161a;--card:#2a1e21;--ink:#f2f2f2;--mut:#b5b5b5;--track:#48363a}}
+:root[data-theme="dark"]{--bg:#16161a;--card:#2a1e21;--ink:#f2f2f2;--mut:#b5b5b5;--track:#48363a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+header{background:var(--red);color:#fff;padding:18px 20px}
+h1{margin:0;font-size:22px}header p{margin:4px 0 0;font-size:13px;opacity:.9}
+main{max-width:1100px;margin:auto;padding:16px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.card{background:var(--card);border-radius:12px;padding:14px}
+.kpi b{display:block;font-size:34px;color:var(--red)}.kpi span{font-size:13px;color:var(--mut)}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 12px;align-items:center}
+button{font:inherit;font-size:13px;border:1px solid var(--red);background:transparent;color:var(--red);border-radius:999px;padding:6px 14px;cursor:pointer}
+button.on{background:var(--red);color:#fff}.sp{flex:1}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.card h3{margin:0 0 4px;font-size:16px}.meta{font-size:12px;color:var(--mut);margin-bottom:8px}
+.chip{display:inline-block;font-size:11px;background:var(--red);color:#fff;border-radius:999px;padding:2px 9px;margin-right:4px}
+.track{height:10px;background:var(--track);border-radius:6px;overflow:hidden;margin:8px 0 4px}
+.fill{height:100%;background:var(--red);width:0;transition:width 1s ease}
+.team{margin-top:8px;font-size:12px}.team i{font-style:normal;display:inline-block;border:1px solid var(--mut);border-radius:999px;padding:1px 8px;margin:2px 3px 0 0}
+input[type=range]{width:100%;accent-color:#c41230}
+h2{font-size:18px;margin:24px 0 10px}
+.row{display:flex;align-items:center;gap:8px;font-size:13px;margin:6px 0}.row .l{width:110px}.row .track{flex:1;margin:0}
+.tl{border-left:3px solid var(--red);margin-left:6px;padding-left:14px}.tl div{margin:0 0 12px;font-size:14px}.tl small{display:block;color:var(--red);font-weight:bold}
+</style></head><body>
+<header><h1>Internship Dashboard – Sasini Perera</h1><p>Business Excellence · Vallibel ONE · Live view of projects, teams and learning</p></header>
+<main>
+<div class="kpis" id="kpis"></div>
+<div class="bar" id="filters"></div>
+<div class="grid" id="projects"></div>
+<h2>BU-wise workload</h2><div class="card" id="bu"></div>
+<h2>My learning journey</h2><div class="card"><div class="tl" id="tl"></div></div>
+</main>
+<script>
+var P=[
+{n:"Unidil Cardboard Flipping (AUT-17)",bu:"Unidil",st:"Decision made: automate",p:60,role:"Research, data, ROI",t:[]},
+{n:"SAL Automated Rack Transfer",bu:"SAL",st:"Fabrication ongoing",p:45,role:"Design & fabrication",t:["Sasini","Anuranga","Dulitha","Okitha","Pasindu","Sithara"]},
+{n:"SAL Golden Run",bu:"SAL",st:"Data collection",p:30,role:"Database building",t:[]},
+{n:"SAL IoT Energy Meter",bu:"SAL",st:"Documentation",p:50,role:"Documentation",t:[]},
+{n:"Project Charter Tracker",bu:"All plants",st:"Updated Tue & Fri",p:70,role:"Tracking & PM",t:[]}];
+var L=[["August","Fishbone root-cause analysis, Office 365 research, AI for business research, factory layout mapping"],
+["September","Unidil ROI and automation decision, SCPLC and RBL process learning, One Million Prompts AI course"]];
+var f="All",edit=false,K=function(){try{return JSON.parse(localStorage.getItem("dash")||"{}")}catch(e){return{}}}();
+P.forEach(function(x){if(K[x.n]!=null)x.p=K[x.n]});
+function save(){var o={};P.forEach(function(x){o[x.n]=x.p});try{localStorage.setItem("dash",JSON.stringify(o))}catch(e){}}
+function count(el,to){var s=0,d=Math.max(1,Math.round(to/30)),i=setInterval(function(){s=Math.min(to,s+d);el.textContent=s+(el.dataset.u||"");if(s>=to)clearInterval(i)},30)}
+function kpis(){var a=Math.round(P.reduce(function(s,x){return s+x.p},0)/P.length);
+var d=[["Active projects",P.length,""],["Average progress",a,"%"],["Factory visits",4,""],["Courses completed",1,""]];
+document.getElementById("kpis").innerHTML=d.map(function(k){return '<div class="card kpi"><b data-u="'+k[2]+'" data-to="'+k[1]+'">0</b><span>'+k[0]+'</span></div>'}).join("");
+document.querySelectorAll(".kpi b").forEach(function(b){count(b,+b.dataset.to)})}
+function filters(){var bs=["All","SAL","Unidil","All plants"];
+document.getElementById("filters").innerHTML=bs.map(function(b){return '<button class="'+(b==f?"on":"")+'" data-f="'+b+'">'+b+'</button>'}).join("")+'<span class="sp"></span><button id="ed" class="'+(edit?"on":"")+'">'+(edit?"Done editing":"Edit progress")+'</button>';
+document.querySelectorAll("[data-f]").forEach(function(b){b.onclick=function(){f=b.dataset.f;render()}});
+document.getElementById("ed").onclick=function(){edit=!edit;render()}}
+function projects(){var l=P.filter(function(x){return f=="All"||x.bu==f});
+document.getElementById("projects").innerHTML=l.map(function(x){var i=P.indexOf(x);
+return '<div class="card"><h3>'+x.n+'</h3><div class="meta"><span class="chip">'+x.bu+'</span>'+x.st+' · '+x.role+'</div>'+
+'<div class="track"><div class="fill" data-w="'+x.p+'"></div></div><b>'+x.p+'%</b>'+(edit?'<input type="range" min="0" max="100" value="'+x.p+'" data-i="'+i+'">':'')+
+'<div class="team">'+(x.t.length?x.t.map(function(m){return '<i>'+m+'</i>'}).join(""):'<i>Team: add names</i>')+'</div></div>'}).join("");
+setTimeout(function(){document.querySelectorAll(".fill").forEach(function(e){e.style.width=e.dataset.w+"%"})},50);
+document.querySelectorAll("input[type=range]").forEach(function(r){r.oninput=function(){P[+r.dataset.i].p=+r.value;save();var c=r.closest(".card");c.querySelector(".fill").style.width=r.value+"%";c.querySelector("b").textContent=r.value+"%";kpis()}})}
+function bu(){var m={};P.forEach(function(x){m[x.bu]=(m[x.bu]||0)+1});
+document.getElementById("bu").innerHTML=Object.keys(m).map(function(k){var w=m[k]/P.length*100;return '<div class="row"><span class="l">'+k+'</span><div class="track"><div class="fill" data-w="'+w+'"></div></div><span>'+m[k]+' project'+(m[k]>1?"s":"")+'</span></div>'}).join("")}
+function render(){filters();projects();bu()}
+document.getElementById("tl").innerHTML=L.map(function(x){return '<div><small>'+x[0]+' 2026</small>'+x[1]+'</div>'}).join("");
+kpis();render();
+</script></body></html>
