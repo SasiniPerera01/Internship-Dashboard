@@ -3,76 +3,93 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sasini Perera – Internship Dashboard</title>
 <style>
-:root{--bg:#fff;--card:#eeeff1;--ink:#22252a;--mut:#5f646b;--red:#c41230;--ash:#6b7076;--dash:#3a3d42;--track:#d3d5d9;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root{--bg:#fff;--card:#eeeff1;--ink:#22252a;--mut:#5f646b;--red:#c41230;--ash:#6b7076;--dash:#3a3d42;--track:#d3d5d9;--fh:16px;--fb:13px;--fs:12px;--fn:clamp(36px,4vw,54px);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17181a;--card:#26282b;--ink:#f0f0f0;--mut:#b0b4ba;--track:#3d4045}}
 :root[data-theme="dark"]{--bg:#17181a;--card:#26282b;--ink:#f0f0f0;--mut:#b0b4ba;--track:#3d4045}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
-header{background:var(--dash);color:#fff;padding:18px 20px}
-h1{margin:0;font-size:22px}header p{margin:4px 0 0;font-size:13px;opacity:.85}
-main{max-width:1100px;margin:auto;padding:16px}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
-.card{background:var(--card);border-radius:12px;padding:14px}
-.kpi b{display:block;font-size:38px;color:var(--red)}.kpi span{font-size:14px;font-weight:bold}.kpi small{display:block;font-size:12px;color:var(--mut);margin-top:2px}
-.bar{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 12px;align-items:center}
-button{font:inherit;font-size:13px;border:1px solid var(--red);background:transparent;color:var(--red);border-radius:999px;padding:6px 16px;cursor:pointer}
-button.on{background:var(--red);color:#fff}.sp{flex:1}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
-.card h3{margin:0 0 4px;font-size:16px}.meta{font-size:12px;color:var(--mut);margin-bottom:8px}
-.chip{display:inline-block;font-size:11px;background:var(--ash);color:#fff;border-radius:999px;padding:2px 9px;margin-right:4px}
-.track{height:10px;background:var(--track);border-radius:6px;overflow:hidden;margin:8px 0 4px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif;font-size:var(--fb)}
+.in{max-width:1180px;margin:0 auto;padding:0 16px}
+header{background:var(--dash);color:#fff;padding:18px 0}
+header .in{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+h1{margin:0;font-size:clamp(22px,2.6vw,32px)}header p{margin:0;font-size:var(--fb);opacity:.85;line-height:1.5;text-align:right}
+main{padding-bottom:32px}
+h2{font-size:18px;margin:28px 0 12px}
+.card{background:var(--card);border-radius:12px;padding:16px}
+.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.kpi,.tile{text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:150px}
+.kpi b,.tile b{font-size:var(--fn);line-height:1;color:var(--red);margin-bottom:10px}
+.kpi span,.tile span{font-size:var(--fh);font-weight:bold}.kpi small,.tile small{font-size:var(--fs);color:var(--mut);margin-top:4px;line-height:1.4}
+.tile{border:0;font:inherit;color:inherit;cursor:pointer;width:100%}.tile.on{background:var(--red)}.tile.on b,.tile.on span,.tile.on small{color:#fff}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center}.sp{flex:1}
+button.b{font:inherit;font-size:var(--fb);border:1px solid var(--red);background:transparent;color:var(--red);border-radius:999px;padding:6px 16px;cursor:pointer}
+button.b.on{background:var(--red);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
+.pc{display:flex;flex-direction:column}
+.pc h3{margin:0 0 6px;font-size:var(--fh);line-height:1.3}.meta{font-size:var(--fs);color:var(--mut);margin-bottom:10px}
+.chip{display:inline-block;font-size:11px;background:var(--ash);color:#fff;border-radius:999px;padding:2px 9px;margin-right:6px}
+.track{height:10px;background:var(--track);border-radius:6px;overflow:hidden}
 .fill{height:100%;background:var(--red);width:0;transition:width 1s ease}
-.team{margin-top:8px;font-size:12px}.team i{font-style:normal;display:inline-block;border:1px solid var(--ash);border-radius:999px;padding:1px 8px;margin:2px 3px 0 0}
-input[type=range]{width:100%;accent-color:#c41230}
-.big{font-size:52px;font-weight:bold;color:var(--red);line-height:1}
-h2{font-size:18px;margin:24px 0 10px}
-.chart{display:flex;align-items:flex-end;justify-content:space-around;height:240px;padding-top:10px;border-bottom:2px solid var(--ash)}
-.col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;width:22%}
-.col b{font-size:15px;margin-bottom:4px}.col div{width:100%;border-radius:8px 8px 0 0;height:0;transition:height 1s ease}
-.lab{display:flex;justify-content:space-around;font-size:13px;font-weight:bold;margin-top:6px}.lab span{width:22%;text-align:center}
+.pct{font-weight:bold;margin:6px 0 10px;font-size:var(--fh)}
+input[type=range]{width:100%;accent-color:#c41230;margin-bottom:8px}
+.team{margin-top:auto}.team i{font-style:normal;display:inline-block;border:1px solid var(--ash);border-radius:999px;padding:1px 8px;margin:2px 3px 0 0;font-size:var(--fs)}
+.chart{display:flex;align-items:flex-end;justify-content:space-around;height:260px;border-bottom:2px solid var(--ash);padding-top:10px}
+.col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;width:24%}
+.col b{font-size:var(--fh);margin-bottom:4px}.col div{width:100%;border-radius:8px 8px 0 0;height:0;transition:height 1s ease}
+.lab{display:flex;justify-content:space-around;font-size:var(--fb);font-weight:bold;margin-top:8px}.lab span{width:24%;text-align:center}
+@media (max-width:700px){.row3{grid-template-columns:1fr}header p{text-align:left}}
 </style></head><body>
-<header><h1>Internship Dashboard – Sasini Perera</h1><p>Business Excellence · Vallibel ONE · Projects, teams and workload</p></header>
-<main>
-<div class="kpis" id="kpis"></div>
-<div class="bar" id="filters"></div>
-<div id="view"></div>
-<h2>BU-wise workload</h2>
-<div class="card"><div class="chart" id="chart"></div><div class="lab" id="lab"></div></div>
-</main>
+<header><div class="in"><h1>Internship Dashboard – Sasini Perera</h1><p>Business Excellence · Vallibel ONE<br>Projects, teams and workload</p></div></header>
+<main><div class="in">
+<div class="row3" id="kpis"></div>
+<h2>Projects by plant</h2><div class="row3" id="tiles" style="margin-top:0"></div>
+<h2>Projects &amp; team members</h2>
+<div class="bar" id="filters"></div><div class="grid" id="view"></div>
+<h2>BU-wise workload</h2><div class="card"><div class="chart" id="chart"></div><div class="lab" id="lab"></div></div>
+</div></main>
 <script>
 var P=[
-{n:"Unidil Cardboard Flipping (AUT-17)",bu:"Unidil",st:"Decision made: automate",p:60,role:"Research, data, ROI",t:[]},
-{n:"SAL Automated Rack Transfer",bu:"SAL",st:"Fabrication ongoing",p:45,role:"Design & fabrication",t:["Sasini","Anuranga","Dulitha","Okitha","Pasindu","Sithara"]},
-{n:"SAL Golden Run",bu:"SAL",st:"Data collection",p:30,role:"Database building",t:[]},
-{n:"SAL IoT Energy Meter",bu:"SAL",st:"Documentation",p:50,role:"Documentation",t:[]},
-{n:"Project Charter Tracker",bu:"All",st:"Updated every Tue & Fri",p:70,role:"Tracking & PM",t:[]},
-{n:"Factory visit & process learning",bu:"LWT",st:"Visit completed",p:null,role:"Learning",t:[]}];
-var KP=[["Active projects",5,"1 project management + 4 BU projects"],["Factory visits completed",6,""],["Short course completed",1,"One Million Prompts AI Course"]];
-var TILES=[["SAL","Swisstek Aluminium (SAL)"],["Unidil","Unidil Packaging"],["All","All 8 plants – project management"]];
+{n:"Unidil Cardboard Flipping (AUT-17)",bu:"Unidil",m:"Decision made: automate",p:60,t:[]},
+{n:"Unidil IoT: real-time printer machine data monitoring",bu:"Unidil",m:"IoT project",p:0,t:[]},
+{n:"Unidil: reduction of water consumption by 20%",bu:"Unidil",m:"Target: 20% reduction",p:0,t:[]},
+{n:"Unidil: automatic die-cut removal & waste handling system",bu:"Unidil",m:"Corrugated carton production",p:0,t:[]},
+{n:"SAL Automated Rack Transfer",bu:"SAL",m:"Fabrication ongoing",p:45,t:["Sasini","Anuranga","Dulitha","Okitha","Pasindu","Sithara"]},
+{n:"SAL Golden Run",bu:"SAL",m:"Data collection",p:55,t:[]},
+{n:"SAL IoT Energy Meter",bu:"SAL",m:"Documentation",p:50,t:[]},
+{n:"SAL-CON036: reduce LPG consumption by 5%",bu:"SAL",m:"Target: 5% reduction",p:0,t:[]},
+{n:"SAL-CON037: reduce electricity consumption by 5%",bu:"SAL",m:"Target: 5% reduction",p:0,t:[]},
+{n:"SAL-CON038: reduce die changeover time, 5\" extruder press",bu:"SAL",m:"Target: 10.00 to 9.00",p:0,t:[]},
+{n:"SAL-CON039: reduce die changeover time, 6\" extruder press",bu:"SAL",m:"Target: 11.64 to 10.49",p:0,t:[]},
+{n:"SAL-CON040: reduce die changeover time, 7\" extruder press",bu:"SAL",m:"Target: 9.78 to 8.95",p:0,t:[]},
+{n:"Project Charter Tracker",bu:"All",m:"Updated every Tue & Fri",p:70,t:[]},
+{n:"Factory visit & process learning",bu:"LWT",m:"Visit completed",p:null,t:[]}];
+var TILES=[["SAL","SAL projects"],["Unidil","Unidil projects"],["All","BE project (all plants)"]];
+var F=[["SAL","SAL"],["Unidil","Unidil"],["All","BE"],["LWT","LWT"]];
 var W=[["SAL",55,"#c41230"],["Unidil",30,"#4a4e54"],["LWT",15,"#9a9ea4"]];
-var F=["All","SAL","Unidil","LWT"],f="All",edit=false,
-K=function(){try{return JSON.parse(localStorage.getItem("dash2")||"{}")}catch(e){return{}}}();
+var f="SAL",edit=false,K=function(){try{return JSON.parse(localStorage.getItem("dash5")||"{}")}catch(e){return{}}}();
 P.forEach(function(x){if(K[x.n]!=null&&x.p!=null)x.p=K[x.n]});
-function save(){var o={};P.forEach(function(x){o[x.n]=x.p});try{localStorage.setItem("dash2",JSON.stringify(o))}catch(e){}}
-function count(el,to){var s=0,i=setInterval(function(){s=Math.min(to,s+1);el.textContent=s;if(s>=to)clearInterval(i)},60)}
-function kpis(){document.getElementById("kpis").innerHTML=KP.map(function(k){return '<div class="card kpi"><b data-to="'+k[1]+'">0</b><span>'+k[0]+'</span><small>'+k[2]+'</small></div>'}).join("");
+function save(){var o={};P.forEach(function(x){o[x.n]=x.p});try{localStorage.setItem("dash5",JSON.stringify(o))}catch(e){}}
+function $(i){return document.getElementById(i)}
+function cnt(b){return P.filter(function(x){return x.bu==b}).length}
+function count(el,to){var s=0,d=Math.max(1,Math.round(to/25)),i=setInterval(function(){s=Math.min(to,s+d);el.textContent=s;if(s>=to)clearInterval(i)},40)}
+function kpis(){var tot=P.filter(function(x){return x.bu!="LWT"}).length;
+var d=[["Active projects",tot,"1 BE project + "+(tot-1)+" BU projects"],["Factory visits completed",6,"Unidil, SCPLC, RBL, LWT, RCL-H, RCL-E"],["Short course completed",1,"One Million Prompts AI Course"]];
+$("kpis").innerHTML=d.map(function(k){return '<div class="card kpi"><b data-to="'+k[1]+'">0</b><span>'+k[0]+'</span><small>'+k[2]+'</small></div>'}).join("");
 document.querySelectorAll(".kpi b").forEach(function(b){count(b,+b.dataset.to)})}
-function filters(){document.getElementById("filters").innerHTML=F.map(function(b){return '<button class="'+(b==f?"on":"")+'" data-f="'+b+'">'+b+'</button>'}).join("")+'<span class="sp"></span><button id="ed" class="'+(edit?"on":"")+'">'+(edit?"Done editing":"Edit progress")+'</button>';
-document.querySelectorAll("[data-f]").forEach(function(b){b.onclick=function(){f=b.dataset.f;render()}});
-document.getElementById("ed").onclick=function(){edit=!edit;render()}}
-function view(){var h;
-if(f=="All"){h='<div class="grid">'+TILES.map(function(t){var c=P.filter(function(x){return x.bu==t[0]}).length;return '<div class="card"><div class="big">'+c+'</div><div class="meta" style="margin:6px 0 0">'+(c>1?"projects":"project")+' · '+t[1]+'</div></div>'}).join("")+'</div>'}
-else{h='<div class="grid">'+P.filter(function(x){return x.bu==f}).map(function(x){var i=P.indexOf(x);
-return '<div class="card"><h3>'+x.n+'</h3><div class="meta"><span class="chip">'+x.bu+'</span>'+x.st+' · '+x.role+'</div>'+
-(x.p!=null?'<div class="track"><div class="fill" data-w="'+x.p+'"></div></div><b>'+x.p+'%</b>'+(edit?'<input type="range" min="0" max="100" value="'+x.p+'" data-i="'+i+'">':''):'')+
-'<div class="team">'+(x.t.length?x.t.map(function(m){return '<i>'+m+'</i>'}).join(""):'<i>Team names: add here</i>')+'</div></div>'}).join("")+'</div>'}
-document.getElementById("view").innerHTML=h;
+function tiles(){$("tiles").innerHTML=TILES.map(function(t){return '<button class="card tile'+(t[0]==f?" on":"")+'" data-f="'+t[0]+'"><b>'+cnt(t[0])+'</b><span>'+t[1]+'</span></button>'}).join("");
+document.querySelectorAll(".tile").forEach(function(b){b.onclick=function(){f=b.dataset.f;render()}})}
+function view(){$("filters").innerHTML=F.map(function(b){return '<button class="b'+(b[0]==f?" on":"")+'" data-f="'+b[0]+'">'+b[1]+'</button>'}).join("")+'<span class="sp"></span><button class="b'+(edit?" on":"")+'" id="ed">'+(edit?"Done editing":"Edit progress")+'</button>';
+document.querySelectorAll(".bar [data-f]").forEach(function(b){b.onclick=function(){f=b.dataset.f;render()}});
+$("ed").onclick=function(){edit=!edit;view()};
+$("view").innerHTML=P.map(function(x,i){return[x,i]}).filter(function(a){return a[0].bu==f}).map(function(a){var x=a[0];
+return '<div class="card pc"><h3>'+x.n+'</h3><div class="meta"><span class="chip">'+(x.bu=="All"?"BE":x.bu)+'</span>'+x.m+'</div>'+
+(x.p!=null?'<div class="track"><div class="fill" data-w="'+x.p+'"></div></div><div class="pct">'+x.p+'%</div>'+(edit?'<input type="range" min="0" max="100" value="'+x.p+'" data-i="'+a[1]+'">':''):'')+
+'<div class="team">'+(x.t.length?x.t.map(function(m){return '<i>'+m+'</i>'}).join(""):'<i>Team names: add here</i>')+'</div></div>'}).join("");
 setTimeout(function(){document.querySelectorAll(".fill").forEach(function(e){e.style.width=e.dataset.w+"%"})},50);
-document.querySelectorAll("input[type=range]").forEach(function(r){r.oninput=function(){P[+r.dataset.i].p=+r.value;save();var c=r.closest(".card");c.querySelector(".fill").style.width=r.value+"%";c.querySelector("b").textContent=r.value+"%"}})}
-function chart(){document.getElementById("chart").innerHTML=W.map(function(w){return '<div class="col"><b>'+w[1]+'%</b><div data-h="'+w[1]+'" style="background:'+w[2]+'"></div></div>'}).join("");
-document.getElementById("lab").innerHTML=W.map(function(w){return '<span>'+w[0]+'</span>'}).join("");
+document.querySelectorAll("input[type=range]").forEach(function(r){r.oninput=function(){P[+r.dataset.i].p=+r.value;save();var c=r.closest(".card");c.querySelector(".fill").style.width=r.value+"%";c.querySelector(".pct").textContent=r.value+"%"}})}
+function chart(){$("chart").innerHTML=W.map(function(w){return '<div class="col"><b>'+w[1]+'%</b><div data-h="'+w[1]+'" style="background:'+w[2]+'"></div></div>'}).join("");
+$("lab").innerHTML=W.map(function(w){return '<span>'+w[0]+'</span>'}).join("");
 setTimeout(function(){document.querySelectorAll(".col div").forEach(function(e){e.style.height=(e.dataset.h*1.6)+"%"})},100)}
-function render(){filters();view()}
+function render(){tiles();view()}
 kpis();render();chart();
 </script></body></html>
