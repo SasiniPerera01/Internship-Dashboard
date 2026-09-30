@@ -49,7 +49,7 @@ input[type=range]{width:100%;accent-color:#c41230;margin-bottom:8px}
 </div></main>
 <script>
 var P=[
-{n:"Unidil Cardboard Flipping Project",bu:"Unidil",m:"Decision made: automate",p:60,t:[]},
+{n:"Unidil Cardboard Flipping Project",bu:"Unidil",m:"Decision made: automate",p:60,t:["Ruwan", "Bandara"]},
 {n:"Unidil IoT: real-time printer machine data monitoring",bu:"Unidil",m:"IoT project",p:0,t:["Sachintha","Chamini","Chandana","Premalal","Indika"]},
 {n:"Unidil: reduction of water consumption by 20%",bu:"Unidil",m:"Target: 20% reduction",p:0,t:["Lester","Chamini","Chandana","Premalal","Indika"]},
 {n:"Unidil: automatic die-cut removal & waste handling system",bu:"Unidil",m:"Corrugated carton production",p:0,t:["Rathnasiri"]},
@@ -73,7 +73,7 @@ function cnt(b){return P.filter(function(x){return x.bu==b}).length}
 function count(el,to){var s=0,d=Math.max(1,Math.round(to/25)),i=setInterval(function(){s=Math.min(to,s+d);el.textContent=s;if(s>=to)clearInterval(i)},40)}
 function sub(l){var n=l.length,e=l.filter(function(x){return x.be}).length,u=n-e,a=[];if(e)a.push(e+" BE project"+(e>1?"s":""));if(u)a.push(u+" BU project"+(u>1?"s":""));return a.join(" + ")}
 function kpis(){var tot=P.length;
-var d=[["Active projects",tot,"1 BE project + 12 BU projects"],["Factory visits completed",6,"SAL, SCPLC, Unidil, LWT, LT, RBL<br>Still to visit: RCL-H, RCL-E"],["Short course completed",1,"One Million Prompts AI Course"]];
+var d=[["Active projects",tot,"1 BE project + 12 BU projects"],["Factory visits completed",7,"SAL, SCPLC, Unidil, LWT, LT, RBL, RCL-H<br>Still to visit: RCL-E"],["Short course completed",1,"One Million Prompts AI Course"]];
 $("kpis").innerHTML=d.map(function(k){return '<div class="card kpi k'+(d.indexOf(k)+1)+'"><b data-to="'+k[1]+'">0</b><span>'+k[0]+'</span><small>'+k[2]+'</small></div>'}).join("");
 document.querySelectorAll(".kpi b").forEach(function(b){count(b,+b.dataset.to)})}
 function plants(){var m=Math.max.apply(null,PL.map(function(a){return cnt(a[0])}));
